@@ -9,8 +9,8 @@ from .views import (
     ReviewViewSet,
     SendCode,
     TitlesViewSet,
-    UsersViewCreateAdmin,
     UserView,
+    UsersViewCreateAdmin,
     UserViewPatchDelAdmin,
 )
 

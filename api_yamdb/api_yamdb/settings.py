@@ -123,7 +123,7 @@ INVALID_SCORE = 'Оценка должна быть в диапазоне от {
 
 INVALID_YEAR = 'Год не может быть больше текущего.'
 
-DEFAULT_FROM_EMAIL = os.getenv('FROM_EMAIL')
+DEFAULT_FROM_EMAIL = os.getenv('FROM_EMAIL', '')
 
 EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
 

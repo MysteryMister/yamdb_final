@@ -126,8 +126,7 @@ class UserViewPatchDelAdmin(generics.RetrieveUpdateDestroyAPIView):
     lookup_field = 'username'
 
     def get_queryset(self):
-        user = User.objects.filter(username=self.kwargs['username'])
-        return user
+        return User.objects.filter(username=self.kwargs['username'])
 
 
 class UserView(APIView):

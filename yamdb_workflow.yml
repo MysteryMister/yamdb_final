@@ -17,11 +17,15 @@ jobs:
       run: | 
         python -m pip install --upgrade pip 
         pip install flake8 pep8-naming flake8-broken-line flake8-return flake8-isort
-        pip install -r requirements.txt 
+        pip install -r api_yamdb/requirements.txt 
 
     - name: Test with flake8 and django tests
       run: |
+        isort .
         python -m flake8
+        cd api_yamdb/
+        python manage.py test
+        cd ..
         pytest
 
   build_and_push_to_docker_hub:
@@ -33,8 +37,6 @@ jobs:
         uses: actions/checkout@v2 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1 
-        with: 
-          context: ./api_yamdb/
       - name: Login to Docker 
         uses: docker/login-action@v1 
         with:
@@ -43,8 +45,9 @@ jobs:
       - name: Push to Docker Hub
         uses: docker/build-push-action@v2 
         with:
+          context: ./api_yamdb
           push: true
-          tags: ${{ secrets.DOCKER_REPOSITORY }}:latest
+          tags: bigfloppa228/yamdb_final:latest
 
   deploy:
     runs-on: ubuntu-latest
@@ -60,6 +63,7 @@ jobs:
           script: |
             sudo docker-compose stop
             sudo docker-compose rm web
+            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/yamdb_final:latest
             touch .env
             echo DB_ENGINE=${{ secrets.DB_ENGINE }} >> .env
             echo DB_NAME=${{ secrets.DB_NAME }} >> .env
@@ -67,8 +71,6 @@ jobs:
             echo POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} >> .env
             echo DB_HOST=${{ secrets.DB_HOST }} >> .env
             echo DB_PORT=${{ secrets.DB_PORT }} >> .env
-            echo FROM_EMAIL=${{ secrets.FROM_EMAIL }} >> .env
-            echo SECRET_KEY=${{ secrets.SECRET_KEY }} >> .env
             sudo docker-compose up -d
 
   send_message:

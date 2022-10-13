@@ -59,5 +59,10 @@ FROM_EMAIL=test@mail.ru
 
 SECRET_KEY=test_key
 
+### Адрес главной страницы
+http://big-floppa.hopto.org/
+
+http://158.160.2.129/
+
 ### Автор
 Ли Георгий, 29 когорта, 2 тимворк
